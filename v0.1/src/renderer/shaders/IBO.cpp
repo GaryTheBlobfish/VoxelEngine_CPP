@@ -25,6 +25,7 @@ IBO::IBO()
 {
 	glGenBuffers(1, &id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
 
 void IBO::Bind()
@@ -35,9 +36,4 @@ void IBO::Bind()
 void IBO::UnBind()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-void IBO::GiveData(unsigned int indices[], int size)
-{
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
 }

@@ -14,13 +14,13 @@ class Camera {
 	float rotY = 0.0f;
 	float rotZ = 0.0f;
 
-	const float speed = 4.0f;
+	const float speed = 8.0f;
 	const float boost = speed / 2;
 
 	glm::vec3 pos = glm::vec3(0,0,0);
 
+
 public:
-	glm::mat4 view = glm::mat4(1.0f);
 	Camera(glm::vec3 pos, float rotX, float rotY, float rotZ);
 
 	float sensitivityModifier = 1.0f;

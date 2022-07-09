@@ -6,11 +6,12 @@
 
 class VBO
 {
-public:
 	unsigned int id;
+public:
 	VBO();
 	void Bind();
 	void UnBind();
-	void GiveData(float data[], int size);
+	void GiveVertexData();
+	void GiveTexData();
 };
 

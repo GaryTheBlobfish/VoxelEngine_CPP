@@ -1,10 +1,10 @@
 #pragma once
 
 class IBO {
-public:
 	unsigned int id;
+
+public:
 	IBO();
 	void Bind();
 	void UnBind();
-	void GiveData(unsigned int indices[], int size);
 };

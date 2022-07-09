@@ -31,15 +31,6 @@ void Camera::move(GLFWwindow* win, double delt)
 		moveDirZ += speed * dt;
 	}
 
-	if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) {
-		moveDirX -= speed * dt;
-	}
-
-	if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS) {
-		moveDirX += speed * dt;
-	}
-
-
 	double xpos, ypos;
 	glfwGetCursorPos(win, &xpos, &ypos);
 
@@ -52,10 +43,12 @@ void Camera::move(GLFWwindow* win, double delt)
 	else if (rotX <= -90.0f)
 		rotX = -90.0f;
 	
-	float dx = (float)-(moveDirZ * sin(glm::radians(rotY)))+ (moveDirX * cos(glm::radians(rotY)));
-	float dz = (float)(moveDirZ * cos(glm::radians(rotY))) + (moveDirX * sin(glm::radians(rotY)));
+	float dx = (float)-(moveDirZ * sin(glm::radians(rotY)));
+	float dz = (float)(moveDirZ * cos(glm::radians(rotY)));
 
 	pos += glm::vec3(dx, 0, dz);
+
+
 }
 
 float Camera::getRotX()

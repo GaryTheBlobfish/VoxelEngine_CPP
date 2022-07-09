@@ -10,12 +10,6 @@
 #include <GLM/glm/glm.hpp>
 #include <GLM/glm/gtc/matrix_transform.hpp>
 #include "util/Maths.h"
-#include "terrain/TerrainGenerator.h"
-#include "renderer/models/RawModel.h"
-#include "renderer/Loader.h"
-#include "terrain/mesh/BlockModel.h"
-#include "renderer/models/TexturedModel.h"
-#include "terrain/mesh/Chunk.h"
 
 #define NVSYNC 0
 #define VSYNC 1
@@ -44,10 +38,8 @@ GLFWwindow* createWindowAndGLFWContext() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 #endif
 
-	return glfwCreateWindow(1280, 720, "GaryTheBlobfish::VoxelEngine - C++ Edition v0.2", NULL, NULL);
+	return glfwCreateWindow(1280, 720, "GaryTheBlobfish::VoxelEngine - C++ Edition v0.1", NULL, NULL);
 }
-
-std::vector<Chunk> chunks;
 
 int main() {
 
@@ -87,61 +79,67 @@ int main() {
 	
 	/***************************** GAME LOOP ******************************/
 	MasterRenderer r;
-	Loader l;
+	VAO vao = VAO();
+	vao.Bind();
 
-	BlockModel bm = BlockModel();
+	VBO vbo_vert = VBO();
+	vbo_vert.GiveVertexData();
+	sh.linkVertexAttribs();
 
-	RawModel rm = l.loadToVAO(bm.getVertices(), 72, bm.getTex(), 48, bm.getIndices(), 36);
-	TexturedModel tm = TexturedModel(rm, Texture("res/texture/block/grid.png"));
+	VBO vbo_tex = VBO();
+	vbo_tex.GiveTexData();
+	sh.linkTextureAttribs();
 
+	IBO ibo = IBO();
 	sh.setupVertexShader();
 	sh.setupFragmentShader();
 	sh.setupShaderProgram();
+	Texture tex = Texture("res/texture/block/dirt.png");
 
 	Camera cam = Camera(glm::vec3(0,0,2.0f), 0,0,0);
 
-	std::vector<glm::vec3> positions;
-	TerrainGenerator tg;
+
+
 
 
 	double totalFPS = 0;
 	double totalFrameCount = 0;
 	double delt = 0.01;
 
+	float degreesPerSecond = 10.0f;
+
 	double TimeCounter = glfwGetTime();
 
 	double FPSSecond = 0;
 	double FrameCountSecond = 0;
-
-	tg.generateHeights();
-
 	while (!glfwWindowShouldClose(win)) {
 		double start = glfwGetTime();
 		glfwPollEvents();
 
 		// logic
 		cam.move(win, delt);
-		tg.generateChunks(cam.getPosition(), chunks);
+
 
 		// rendering
 		sh.BindShaderProg();
-		r.prepare();
+		sh.loadTransformationMatrix(Maths::makeTransMat(glm::vec3(0,0,-1.0f), 0.0f, 0.0f, 0.0f, 1, 1, 1));//Maths::makeTransMat(glm::vec3(0,0,0), 0, (float)glfwGetTime() * (float)delt, 0, 1, 1, 1));
 		sh.loadViewMatrix(Maths::makeViewMat(cam));
 		sh.loadProjectionMatrix(projection);
+		r.prepare();
 		sh.setUniformVec4("colour2", {sin(glfwGetTime()),cos(glfwGetTime()),1.0f,1.0f});
-		for (Chunk c : chunks) {
-			for (int i = 0; i < c.blocks.size(); i++)
-			{
-				sh.loadTransformationMatrix(Maths::makeTransMat(c.blocks[i].getPosition(), 0.0f, 0.0f, 0.0f, 1, 1, 1));//Maths::makeTransMat(glm::vec3(0,0,0), 0, (float)glfwGetTime() * (float)delt, 0, 1, 1, 1));
-				tm.getTexture().Bind();
-				r.render(tm);
-			}
-		}
+		tex.Bind(0);
+		vao.Bind();
+		ibo.Bind();
 
+
+		r.render();
+
+		vao.UnBind();
 		sh.UnBindShaderProg();
-		glfwSetCursorPos(win, 0, 0);
 
 		glfwSwapBuffers(win);
+
+		glfwSetCursorPos(win, 0, 0);
 		double finish = glfwGetTime();
 		delt = finish - start;
 
@@ -160,7 +158,7 @@ int main() {
 
 	double avgFPS = totalFPS / totalFrameCount;
 	std::cout << "avg FPS: " << avgFPS << std::endl;
-	l.cleanUp();
+
 
 	return 0;
 }

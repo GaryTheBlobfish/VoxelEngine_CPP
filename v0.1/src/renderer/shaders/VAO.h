@@ -1,9 +1,9 @@
 #pragma once
 class VAO
 {
+	unsigned int id;
 
 public:
-	unsigned int id;
 	VAO();
 	void Bind();
 	void UnBind();

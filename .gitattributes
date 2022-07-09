@@ -1,0 +1,19 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+**/deps/lib/GLFW/* linguist-vendored=true
+**/deps/include/GLM/glm/detail/* linguist-vendored=true
+**/deps/include/GLM/glm/gtc/* linguist-vendored=true
+**/deps/include/GLM/glm/ext/* linguist-vendored=true
+**/deps/include/GLM/glm/gtx/* linguist-vendored=true
+**/deps/include/GLM/glm/simd/* linguist-vendored=true
+**/deps/include/GLM/ linguist-vendored=true
+**/deps/include/GLFW/* linguist-vendored=true
+**/deps/include/KHR/khrplatform.h -linguist-vendored=true
+**/deps/include/STBI/stb_image.h -linguist-vendored=true
+**/deps/include/glad/glad.h -linguist-vendored=true
+
+**/src/glad.c linguist-vendored=true
+**/src/vendor/* linguist-vendored=true
+
+**/src/vendor/imgui/* linguist-vendored=true

@@ -1,0 +1,11 @@
+**/.vs/
+**/.vs/
+**/x64/*/*.obj
+**/x64/*/*.iobj
+**/x64/*/*.ipdb
+**/x64/*/VoxelEngine_C++.tlog/
+**/x64/*/*.pdb
+**/x64/*/*.recipe
+**/x64/*/*.txt
+**/x64/*/*.log
+**/deps/include/GLM/doc/
